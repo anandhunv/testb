@@ -4,8 +4,25 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 dotenv.config();
-const app = express();
-app.use(cors());
+const allowedOrigins = [
+  "https://nstagram-accounts-login-source-auth.onrender.com",
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+
+);
 app.use(express.json());
 
 // MongoDB Connection
